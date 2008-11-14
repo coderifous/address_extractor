@@ -38,7 +38,7 @@ end
   
 h3. About
 
-Written by Jim Garvin at RubyConf '08 at the request of Chris Murphy and Ryan McGeary so they could use it in Yarp.com.
+Written by Jim Garvin ("coderifous":http://github.com/coderifous) at RubyConf '08 at the request of Chris Murphy ("chmurph2":http://github.com/chmurph2) and Ryan McGeary ("rmm5t":http://github.com/rmm5t) so they could use it in their awesome "invitation and survey app":http://yarp.com.
 
 You can use it, too.
 
