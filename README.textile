@@ -5,6 +5,9 @@ Find and/or replace mailing addresses in strings.
 h2. Examples
 
 <pre><code>
+require 'rubygems'
+require 'address_extractor'
+  
 string = <<EOF
 Please send the package to 123 Foo St., Someplace FL
 

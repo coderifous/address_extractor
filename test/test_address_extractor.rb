@@ -33,6 +33,13 @@ class AddressExtractorTest < Test::Unit::TestCase
     assert string =~ /via mail at:\n  skidoosh/
   end
   
+  def test_no_addresses_found
+    assert_nil AddressExtractor.first_address("foo")
+    assert_equal [], AddressExtractor.find_addresses("foo")
+    assert_equal "foo", AddressExtractor.replace_first_address("foo")
+    assert_equal "foo", AddressExtractor.replace_addresses("foo")
+  end
+  
   module Helpers
     def assert_first_address(a)
       assert_not_nil a

@@ -1,21 +1,32 @@
 class AddressExtractor
   class << self
 
+    # Returns hash for address if address found.
+    # Returns nil if no address found.
     def first_address(string)
       hashify_results string.scan(ADDRESS_PATTERN).first
     end
-    
+
+    # Returns array of hashes for each address found.
+    # Returns empty array if no addresses found.
     def find_addresses(string)
       string.scan(ADDRESS_PATTERN).collect { |a| hashify_results(a) }.compact
     end
     
+    # Pass it a block that recieves 2 parameters: 
+    #   address hash
+    #   matched address string ($&)
+    # Whatever your block returns will be used for the substition.
+    # Returns new string with substition applied to first identified address.
+    # If no address found, returns same string unaltered.
     def replace_first_address(string)
       hash = first_address(string)
       string.sub(ADDRESS_PATTERN) do |match|
         yield(hash, $&)
       end
     end
-    
+
+    # Same as +replace_first_address+ but applies substition to all identified addresses.
     def replace_addresses(string)
       string.gsub(ADDRESS_PATTERN) do |match|
         hash = hashify_results match.scan(ADDRESS_PATTERN).first
@@ -23,7 +34,10 @@ class AddressExtractor
       end
     end
     
+  private
+    
     def hashify_results(matches)
+      return nil if matches.nil?
       result = { }
       capture_index = 0
       CAPTURE_MAP.each do |field|
