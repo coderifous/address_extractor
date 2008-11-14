@@ -2,7 +2,7 @@ require 'rubygems'
 require 'rake'
 require 'echoe'
 
-Echoe.new('address_extractor', '0.1.0') do |p|
+Echoe.new('address_extractor', '0.1.1') do |p|
   p.description    = "Give it text.  It finds addresses in it."
   p.url            = "http://github.com/coderifous/address_extractor"
   p.author         = "Jim Garvin"
