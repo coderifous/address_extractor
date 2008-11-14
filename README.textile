@@ -1,0 +1,45 @@
+h1. AddressExtractor
+
+Find and/or replace mailing addresses in strings.
+
+h2. Examples
+
+<pre><code>
+string = <<EOF
+Please send the package to 123 Foo St., Someplace FL
+
+My phone number is 123-1234 and St. Marc of Israel can be reached 
+via mail at:
+  123 Goob Avenue
+  Apt 123
+  Nice Town CA 123456
+EOF
+
+# Find first address
+AddressExtractor.first_address(string) # => { :street1 => "123 Foo St.", :city => "Someplace", :state => "FL" }
+
+# Find all addresses
+AddressExtractor.find_addresses(string) # => 
+  # [
+  #   { :street1 => "123 Foo St.", :city => "Someplace", :state => "FL" }
+  #   { :street1 => "123 Goob Avenue.", :street2 => "Apt 123", :city => "Nice Town", :state => "CA", :zip => "123456" }
+  # ]
+  
+# Do a gsub on first address
+new_string = AddressExtractor.replace_first_address(string) do |address_hash, address_string|
+  map_link_to(address_string)
+end
+
+# Do a gsub on all addresses
+new_string = AddressExtractor.replace_addresses(string) do |address_hash, address_string|
+  map_link_to(address_string)
+end
+</code></pre>
+  
+h3. About
+
+Written by Jim Garvin at RubyConf '08 at the request of Chris Murphy and Ryan McGeary so they could use it in Yarp.com.
+
+You can use it, too.
+
+The address-finding regex may be a bit naive, I'll gladly accept pull requests that add to the test data and tests.
