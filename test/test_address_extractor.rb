@@ -2,77 +2,79 @@ $: << File.dirname(__FILE__)+"/../lib"
 
 require 'test/unit'
 require 'address_extractor.rb'
+require 'test_helper.rb'
+include TestDataHelper
 
 class AddressExtractorTest < Test::Unit::TestCase
+  include Helpers
 
   def test_first_address_extraction
-    address = AddressExtractor.first_address(DATA1)
-    assert_first_address(address)
+    each_test_data do |test_data|
+      address = AddressExtractor.first_address(test_data[:input])
+      flunk "No address found in:\n#{test_data[:input]}" if address.nil?
+      assert_equal_hashes address, test_data[:expected_output].first
+    end
   end
   
   def test_find_addresses
-    addresses = AddressExtractor.find_addresses(DATA1)
-    assert_first_address  addresses[0]
-    assert_second_address addresses[1]
+    each_test_data do |test_data|
+      addresses = AddressExtractor.find_addresses(test_data[:input])
+      assert_equal addresses.size, test_data[:expected_output].size
+      test_data[:expected_output].each do |expected_output|
+        assert_equal_hashes addresses.shift, expected_output
+      end
+    end
   end
   
   def test_replace_first_address
-    string = AddressExtractor.replace_first_address(DATA1) do |address_hash, address|
-      assert_first_address address_hash
-      assert_first_address_string address
+    string = AddressExtractor.replace_first_address(test_data.first[:input]) do |address_hash, address|
+      assert_equal_hashes address_hash, test_data.first[:expected_output].first
+      assert_match /^\s*123 Foo St., Someplace FL\s*/, address 
       "skidoosh"
     end
     assert string =~ /Please send the package to skidoosh/
   end
-  
+
   def test_replace_addresses
-    string = AddressExtractor.replace_addresses(DATA1) do |address_hash, address|
+    string = AddressExtractor.replace_addresses(test_data.first[:input]) do |address_hash, address|
       "skidoosh"
     end
     assert string =~ /Please send the package to skidoosh/
-    assert string =~ /via mail at:\n  skidoosh/
+    assert string =~ /via mail at:\s+skidoosh/
   end
-  
+
   def test_no_addresses_found
     assert_nil AddressExtractor.first_address("foo")
     assert_equal [], AddressExtractor.find_addresses("foo")
     assert_equal "foo", AddressExtractor.replace_first_address("foo")
     assert_equal "foo", AddressExtractor.replace_addresses("foo")
   end
-  
-  module Helpers
-    def assert_first_address(a)
-      assert_not_nil a
-      assert_equal "123 Foo St.", a[:street1]
-      assert_equal nil,           a[:street2]
-      assert_equal "Someplace",   a[:city]
-      assert_equal "FL",          a[:state]
-      assert_equal nil,           a[:zip]
-    end
-  
-    def assert_first_address_string(string)
-      assert_match /^123 Foo St\., Someplace FL\s*$/, string
-    end
-  
-  
-    def assert_second_address(a)
-      assert_not_nil a
-      assert_equal "123 Goob Avenue", a[:street1]
-      assert_equal "Apt 123",         a[:street2]
-      assert_equal "Nice Town",       a[:city]
-      assert_equal "CA",              a[:state]
-      assert_equal "123456",          a[:zip]
-    end
-  end
-  include Helpers
 end
 
-DATA1 = <<EOF
-Please send the package to 123 Foo St., Someplace FL
+# Test Input/Expected outputs defined below using test_input helper
+# Expanding the tests will probably start with adding new test input
 
-My phone number is 123-1234 and St. Marc of Israel can be reached
-via mail at:
-  123 Goob Avenue
-  Apt 123
-  Nice Town CA 123456
-EOF
+test_input "
+    Please send the package to 123 Foo St., Someplace FL
+
+    My phone number is 123-1234 and St. Marc of Israel can be reached
+    via mail at:
+      123 Goob Avenue
+      Apt 123
+      Nice Town CA 123456
+  ",
+  { :street1 => "123 Foo St.", :street2 => nil, :city => "Someplace", :state => "FL", :zip => nil },
+  { :street1 => "123 Goob Avenue", :street2 => "Apt 123", :city => "Nice Town", :state => "CA", :zip => "123456" }
+
+test_input "Let's meet tomorrow at noon at 123 Foo Bar Street, Scooby NY 123456",
+  { :street1 => "123 Foo Bar Street", :street2 => nil, :city => "Scooby", :state => "NY", :zip => "123456" }
+
+test_input "Let's meet tomorrow at noon at 123 Foo Bar Street, Scooby, NY 123456",
+  { :street1 => "123 Foo Bar Street", :street2 => nil, :city => "Scooby", :state => "NY", :zip => "123456" }
+  
+test_input "Let's meet tomorrow at noon at 123 Foo Bar Street, Scooby, NY, 123456",
+  { :street1 => "123 Foo Bar Street", :street2 => nil, :city => "Scooby", :state => "NY", :zip => "123456" }
+
+test_input "Let's meet tomorrow at noon at 123 Foo Bar Street, 123456",
+  { :street1 => "123 Foo Bar Street", :street2 => nil, :city => nil, :state => nil, :zip => "123456" }
+

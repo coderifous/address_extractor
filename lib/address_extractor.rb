@@ -152,7 +152,7 @@ class AddressExtractor
     (
       \d+                           # A few numbers
       \s+
-      (?:[A-Za-z'.-]+\s?){1,3}      # Followed by a street name
+      (?:[A-Za-z'.-]+\s?){0,2} (?:[A-Za-z'.-]+) # Followed by a street name
     )
     \s* ,?  \s*                     
     (
@@ -163,8 +163,8 @@ class AddressExtractor
     \s* ,?  \s*                     # a comma, optionally
     (?:
       (?:
-        ((?:[A-Za-z]+\s?){1,3})     # city
-        \s+
+        ( (?:[A-Za-z]+\s?){0,2} (?:[A-Za-z]+) ) # city
+        \s* ,?  \s*                 # a comma, optionally
         \b(#{STATE_REGEX})\b        # state
         \s* ,? \s*                  # a comma, optionally
         (\d{6})?                    # a zip code, optionally
