@@ -1,10 +1,10 @@
 Gem::Specification.new do |s|
   s.name = %q{address_extractor}
-  s.version = "0.1.2"
+  s.version = "0.1.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 1.2") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jim Garvin"]
-  s.date = %q{2008-11-16}
+  s.date = %q{2008-11-17}
   s.description = %q{Give it text.  It finds addresses in it.}
   s.email = %q{jim at thegarvin dot com}
   s.extra_rdoc_files = ["lib/address_extractor.rb", "LICENSE.textile", "README.textile"]
