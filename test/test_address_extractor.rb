@@ -61,20 +61,28 @@ test_input "
     via mail at:
       123 Goob Avenue
       Apt 123
-      Nice Town CA 123456
-  ",
+      Nice Town CA 12345",
   { :street1 => "123 Foo St.", :street2 => nil, :city => "Someplace", :state => "FL", :zip => nil },
-  { :street1 => "123 Goob Avenue", :street2 => "Apt 123", :city => "Nice Town", :state => "CA", :zip => "123456" }
+  { :street1 => "123 Goob Avenue", :street2 => "Apt 123", :city => "Nice Town", :state => "CA", :zip => "12345" }
 
-test_input "Let's meet tomorrow at noon at 123 Foo Bar Street, Scooby NY 123456",
-  { :street1 => "123 Foo Bar Street", :street2 => nil, :city => "Scooby", :state => "NY", :zip => "123456" }
+test_input "Let's meet tomorrow at noon at 123 Foo Bar Street, Scooby NY 12345",
+  { :street1 => "123 Foo Bar Street", :street2 => nil, :city => "Scooby", :state => "NY", :zip => "12345" }
 
-test_input "Let's meet tomorrow at noon at 123 Foo Bar Street, Scooby, NY 123456",
-  { :street1 => "123 Foo Bar Street", :street2 => nil, :city => "Scooby", :state => "NY", :zip => "123456" }
+test_input "Let's meet tomorrow at noon at 123 Foo Bar Street, Scooby, NY 12345",
+  { :street1 => "123 Foo Bar Street", :street2 => nil, :city => "Scooby", :state => "NY", :zip => "12345" }
   
-test_input "Let's meet tomorrow at noon at 123 Foo Bar Street, Scooby, NY, 123456",
-  { :street1 => "123 Foo Bar Street", :street2 => nil, :city => "Scooby", :state => "NY", :zip => "123456" }
+test_input "Let's meet tomorrow at noon at 123 Foo Bar Street, Scooby, NY, 12345",
+  { :street1 => "123 Foo Bar Street", :street2 => nil, :city => "Scooby", :state => "NY", :zip => "12345" }
 
-test_input "Let's meet tomorrow at noon at 123 Foo Bar Street, 123456",
-  { :street1 => "123 Foo Bar Street", :street2 => nil, :city => nil, :state => nil, :zip => "123456" }
+test_input "Let's meet tomorrow at noon at 123 Foo Bar Street, 12345",
+  { :street1 => "123 Foo Bar Street", :street2 => nil, :city => nil, :state => nil, :zip => "12345" }
 
+test_input "
+  Apple Computer, Inc.
+  1 Infinite Loop
+  Cupertino, CA 95014",
+  { :street1 => "1 Infinite Loop", :street2 => nil, :city => "Cupertino", :state => "CA", :zip => "95014" }
+
+test_input "Apple Computer, Inc. 1 Infinite Loop, Cupertino, CA 95014",
+  { :street1 => "1 Infinite Loop", :street2 => nil, :city => "Cupertino", :state => "CA", :zip => "95014" }
+  
