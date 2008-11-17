@@ -23,9 +23,5 @@ module Helpers
       assert_equal a[k], b[k], "a[#{k.inspect}] = #{a[k].inspect} != b[#{k.inspect}] = #{b[k].inspect}"
     end
   end
-
-  def assert_first_address_string(string)
-    assert_match /^123 Foo St\., Someplace FL\s*$/, string
-  end
   
 end
