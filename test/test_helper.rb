@@ -17,9 +17,9 @@ module TestDataHelper
 end
 
 module Helpers
-  def assert_equal_hashes(a,b)
-    (a.keys + b.keys).uniq.each do |k|
-      assert_equal a[k], b[k], "a[#{k.inspect}] = #{a[k].inspect} != b[#{k.inspect}] = #{b[k].inspect}"
+  def assert_equal_hashes(expected, hash)
+    (expected.keys + hash.keys).uniq.each do |k|
+      assert_equal expected[k], hash[k], "expected[#{k.inspect}] = #{expected[k].inspect} != hash[#{k.inspect}] = #{hash[k].inspect}"
     end
   end
 end

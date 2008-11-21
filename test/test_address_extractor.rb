@@ -7,7 +7,7 @@ class AddressExtractorTest < Test::Unit::TestCase
     each_test_data do |test_data|
       address = AddressExtractor.first_address(test_data[:input])
       flunk "No address found in:\n#{test_data[:input]}" if address.nil?
-      assert_equal_hashes address, test_data[:expected_output].first
+      assert_equal_hashes test_data[:expected_output].first, address
     end
   end
 
@@ -16,14 +16,14 @@ class AddressExtractorTest < Test::Unit::TestCase
       addresses = AddressExtractor.find_addresses(test_data[:input])
       assert_equal addresses.size, test_data[:expected_output].size
       test_data[:expected_output].each do |expected_output|
-        assert_equal_hashes addresses.shift, expected_output
+        assert_equal_hashes expected_output, addresses.shift
       end
     end
   end
 
   def test_replace_first_address
     string = AddressExtractor.replace_first_address(test_data.first[:input]) do |address_hash, address|
-      assert_equal_hashes address_hash, test_data.first[:expected_output].first
+      assert_equal_hashes test_data.first[:expected_output].first, address_hash
       assert_match /^\s*123 Foo St., Someplace FL\s*/, address
       "skidoosh"
     end
