@@ -81,3 +81,9 @@ test_input "
 test_input "Apple Computer, Inc. 1 Infinite Loop, Cupertino, CA 95014",
   { :street1 => "1 Infinite Loop", :street2 => nil, :city => "Cupertino", :state => "CA", :zip => "95014" }
 
+test_input "Ida Lee Park Recreation Center 60 Ida Lee Dr NW, Leesburg, VA",
+  { :street1 => "60 Ida Lee Dr NW", :street2 => nil, :city => "Leesburg", :state => "VA", :zip => nil }
+
+test_input "Ida Lee Park Recreation Center 60 Ida Lee Dr N West, Leesburg, VA",
+  { :street1 => "60 Ida Lee Dr N West", :street2 => nil, :city => "Leesburg", :state => "VA", :zip => nil }
+

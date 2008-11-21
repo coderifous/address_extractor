@@ -12,8 +12,8 @@ class AddressExtractor
     def find_addresses(string)
       string.scan(ADDRESS_PATTERN).collect { |a| hashify_results(a) }.compact
     end
-    
-    # Pass it a block that recieves 2 parameters: 
+
+    # Pass it a block that recieves 2 parameters:
     #   address hash
     #   matched address string ($&)
     # Whatever your block returns will be used for the substition.
@@ -33,9 +33,9 @@ class AddressExtractor
         useful_address?(hash) ? yield(hash, $&) : match
       end
     end
-    
+
   private
-    
+
     def hashify_results(matches)
       return nil if matches.nil?
       result = { }
@@ -46,16 +46,16 @@ class AddressExtractor
       end
       useful_address?(result) ? result : nil
     end
-    
+
     def useful_address?(hash)
-      hash && 
+      hash &&
       hash[:street1] && ( hash[:zip] || hash[:city] && hash[:state] )
     end
-    
+
   end
-  
+
   CAPTURE_MAP = [ :street1, :street2, :city, :state, :zip, :zip ]
-  
+
   STATES = <<-EOF
     ALABAMA  AL
     ALASKA  AK
@@ -117,9 +117,9 @@ class AddressExtractor
     WISCONSIN  WI
     WYOMING  WY
   EOF
-  
+
   STATE_REGEX = STATES.split(/\n/).collect{ |n| n.scan(/(\w.*\w)\s*([A-Z]{2})\s*$/) }.join("|")
-  
+
   SECONDARY_UNIT_DESIGNATORS = <<-EOF
     APARTMENT APT
     BASEMENT BSMT
@@ -145,14 +145,14 @@ class AddressExtractor
     UNIT UNIT
     UPPER UPPR
   EOF
-  
+
   SECONDARY_UNIT_DESIGNATORS_REGEX = SECONDARY_UNIT_DESIGNATORS.split(/\n/).collect{ |n| n.scan(/(\w+)\s*(\w+)\s*$/) }.join("|")
 
   ADDRESS_PATTERN = /
     (
       \d+                           # A few numbers
       \s+
-      (?:[A-Za-z'.-]+\s?){0,2} (?:[A-Za-z'.-]+) # Followed by a street name
+      (?:[A-Za-z'.-]+\s?){1,5}      # Followed by a street name
     )
     \s* ,?  \s*                     # a comma, optionally
     (
@@ -168,7 +168,7 @@ class AddressExtractor
         \b(#{STATE_REGEX})\b        # state
         \s* ,? \s*                  # a comma, optionally
         (\d{5})?                    # a zip code, optionally
-      )                            
+      )
       |                             # or, instead of city and state
       (\d{5})?                      # a lone zip code will do
     )
