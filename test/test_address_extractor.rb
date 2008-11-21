@@ -1,13 +1,8 @@
-$: << File.dirname(__FILE__)+"/../lib"
-
-require 'test/unit'
-require 'address_extractor.rb'
-require 'test_helper.rb'
+require 'address_extractor'
+require 'test_helper'
 include TestDataHelper
 
 class AddressExtractorTest < Test::Unit::TestCase
-  include Helpers
-
   def test_first_address_extraction
     each_test_data do |test_data|
       address = AddressExtractor.first_address(test_data[:input])
@@ -15,7 +10,7 @@ class AddressExtractorTest < Test::Unit::TestCase
       assert_equal_hashes address, test_data[:expected_output].first
     end
   end
-  
+
   def test_find_addresses
     each_test_data do |test_data|
       addresses = AddressExtractor.find_addresses(test_data[:input])
@@ -25,11 +20,11 @@ class AddressExtractorTest < Test::Unit::TestCase
       end
     end
   end
-  
+
   def test_replace_first_address
     string = AddressExtractor.replace_first_address(test_data.first[:input]) do |address_hash, address|
       assert_equal_hashes address_hash, test_data.first[:expected_output].first
-      assert_match /^\s*123 Foo St., Someplace FL\s*/, address 
+      assert_match /^\s*123 Foo St., Someplace FL\s*/, address
       "skidoosh"
     end
     assert string =~ /Please send the package to skidoosh/
@@ -70,7 +65,7 @@ test_input "Let's meet tomorrow at noon at 123 Foo Bar Street, Scooby NY 12345",
 
 test_input "Let's meet tomorrow at noon at 123 Foo Bar Street, Scooby, NY 12345",
   { :street1 => "123 Foo Bar Street", :street2 => nil, :city => "Scooby", :state => "NY", :zip => "12345" }
-  
+
 test_input "Let's meet tomorrow at noon at 123 Foo Bar Street, Scooby, NY, 12345",
   { :street1 => "123 Foo Bar Street", :street2 => nil, :city => "Scooby", :state => "NY", :zip => "12345" }
 
@@ -85,4 +80,4 @@ test_input "
 
 test_input "Apple Computer, Inc. 1 Infinite Loop, Cupertino, CA 95014",
   { :street1 => "1 Infinite Loop", :street2 => nil, :city => "Cupertino", :state => "CA", :zip => "95014" }
-  
+
