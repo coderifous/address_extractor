@@ -1,4 +1,6 @@
 require 'test/unit'
+require 'rubygems'
+begin require 'redgreen' unless ENV['TM_FILENAME']; rescue LoadError; end
 
 module TestDataHelper
   def test_input(input_string, *expected_outputs)
