@@ -27,15 +27,15 @@ class AddressExtractorTest < Test::Unit::TestCase
       assert_match /^\s*123 Foo St., Someplace FL\s*/, address
       "skidoosh"
     end
-    assert string =~ /Please send the package to skidoosh/
+    assert_match /Please send the package to skidoosh/, string
   end
 
   def test_replace_addresses
     string = AddressExtractor.replace_addresses(test_data.first[:input]) do |address_hash, address|
       "skidoosh"
     end
-    assert string =~ /Please send the package to skidoosh/
-    assert string =~ /via mail at:\s+skidoosh/
+    assert_match /Please send the package to skidoosh/, string
+    assert_match /via mail at:\s+skidoosh/, string
   end
 
   def test_no_addresses_found
