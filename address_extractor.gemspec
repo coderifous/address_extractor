@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.files = ["lib/address_extractor.rb", "LICENSE.textile", "Manifest", "Rakefile", "README.textile", "test/test_address_extractor.rb", "address_extractor.gemspec", "test/test_helper.rb"]
   s.has_rdoc = true
   s.homepage = %q{http://github.com/coderifous/address_extractor}
-  s.rdoc_options = ["--line-numbers", "--inline-source", "--title", "Address_extractor", "--main", "README.textile"]
+  s.rdoc_options = ["--line-numbers", "--title", "Address_extractor", "--main", "README.textile"]
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{address_extractor}
   s.rubygems_version = %q{1.2.0}
